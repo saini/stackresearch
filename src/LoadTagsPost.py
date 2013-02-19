@@ -13,11 +13,6 @@ class DataLoad():
         self.dbConfig = config
         self.con = self.openConnection()
         self.cursor = self.con.cursor()
-##db = _mysql.connect('karnali.ics.uci.edu', 'sourcerer', 'tyl0n4pi', 'stackoverflow')
-#db.query("""SELECT id, tags, acceptedanswersid from posts where posttypeid = 1""")
-#r = db.use_result() 
-#rows = r.fetchall()
-#query = """SELECT id, tags, acceptedanswersid from posts where posttypeid = 1"""
     def loadData(self, fromTable, toTable):
         #rowNum =  self.getTotalRowsInTable(fromTable)
         query = "SELECT id, tags, acceptedanswerid from {0} where posttypeid = 1".format(fromTable)
