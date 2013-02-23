@@ -4,11 +4,13 @@ Created on Feb 18, 2013
 @author: vaibhavsaini
 '''
 
+from Base import *
+from DbConnect import DbConnect
+from Models import *
 from MySQLdb import cursors
 import MySQLdb as mdb
 import datetime
 import sys
-from DbConnect import DbConnect
 class DataLoad():
     
     def __init__(self , config):
@@ -32,7 +34,7 @@ class DataLoad():
             self.valStr += "'%s',"
         self.valStr = self.valStr[0:len(self.valStr)-2]
         self.dbConnect =DbConnect(self.dbConfig)
-        Session  = self.dbConnect.openConnection()
+        Session, self.engine  = self.dbConnect.openConnection()
         self.session = Session()
         
             
@@ -50,6 +52,20 @@ class DataLoad():
             else:
                 self.insertRows(rows, toTable)
                 self.writeCon.commit()
+    
+    def loadData2(self):
+        for row in self.session.query(Post).filter(Post.postTypeId==1)[0:10]:
+            print row
+        print "done"
+
+    def addData(self):
+        dummy = Dummy(name="ba", score=12)
+        self.session.add(dummy)
+        dummy.score=14
+        dummy.name='vv'
+        self.session.add(dummy)
+        self.session.commit()
+
 
     def getTotalRowsInTable(self, tableName):
         query = "SELECT count(*) from {0}".format(tableName)
@@ -141,14 +157,15 @@ dbConfig = { 'host': 'karnali.ics.uci.edu',
                          'pass': 'tyl0n4pi',
                          'db': 'stackoverflow'}
 dataLoad =  DataLoad(dbConfig) # gets the dataLoadObject and opens the connection
-print dataLoad.langString
-print "starting load"
-print len(dataLoad.fields.split(',')), len(dataLoad.valStr.split(',')) 
-
-tag = ('java', 7779L, 28154L, None, datetime.datetime(2008, 8, 11, 13, 30, 21), 4L, 894L, "<p>I have read through several reviews on Amazon and some books seem outdated.  I am currently using MyEclipse 6.5 which is using Eclipse 3.3.  I'm interested in hearing from people that have experience learning RCP and what reference material they used to get started.  Thanks in advance. Bruce</p>&#xA;", 791L, None, None, None, None, datetime.datetime(2012, 4, 18, 15, 19, 12), 'I would like a recommendation for a book on E', '<java><eclipse><rcp><myeclipse>', 6L, None, None, None, None)
-query_prefix= "insert into tags_post_flat(Tag, PostId, AcceptedAnswerId, ParentId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavouriteCount, ClosedDate, CommunityOwnedDate) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s)"
-query = query_prefix%tag
-print query
-#dataLoad.loadData("posts", 'tags_post_flat')
-#dataLoad.closeConnection()
-print "done"
+#print dataLoad.langString
+#print "starting load"
+#print len(dataLoad.fields.split(',')), len(dataLoad.valStr.split(',')) 
+#Base.metadata.create_all(dataLoad.engine)
+dataLoad.loadData2()
+#tag = ('java', 7779L, 28154L, None, datetime.datetime(2008, 8, 11, 13, 30, 21), 4L, 894L, "<p>I have read through several reviews on Amazon and some books seem outdated.  I am currently using MyEclipse 6.5 which is using Eclipse 3.3.  I'm interested in hearing from people that have experience learning RCP and what reference material they used to get started.  Thanks in advance. Bruce</p>&#xA;", 791L, None, None, None, None, datetime.datetime(2012, 4, 18, 15, 19, 12), 'I would like a recommendation for a book on E', '<java><eclipse><rcp><myeclipse>', 6L, None, None, None, None)
+#query_prefix= "insert into tags_post_flat(Tag, PostId, AcceptedAnswerId, ParentId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavouriteCount, ClosedDate, CommunityOwnedDate) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s)"
+#query = query_prefix%tag
+#print query
+##dataLoad.loadData("posts", 'tags_post_flat')
+##dataLoad.closeConnection()
+#print "done"

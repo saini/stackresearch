@@ -23,10 +23,9 @@ class DbConnect(object):
                                                                     self.config['pass'],
                                                                     self.config['host'],
                                                                     self.config['db'])
-        print connectionString
-        engine = create_engine(connectionString)
+        engine = create_engine(connectionString,echo=True)
         Session = sessionmaker(engine)
-        return Session
+        return Session,engine
     
         #print engine.execute('select 1').scalar()
 

@@ -5,14 +5,15 @@ Created on Feb 21, 2013
 '''
 from sqlalchemy.schema import Column, Sequence
 from sqlalchemy.types import *
-import Base
+from Base import *
 
 class Post(Base):
     '''
     classdocs
     '''
-    __tablename__ = 'posts'
+    __tablename__ = 'post1'
     id = Column(Integer, primary_key=True)
+    postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
     parentId = Column(Integer),
     creationDate = Column(DateTime)
@@ -32,11 +33,15 @@ class Post(Base):
     favouriteCount = Column(Integer)
     closedDate = Column(DateTime)
     communityOwnedDate = Column(DateTime)
+    
+    def __repr__(self):
+        return "<Post (%d)>" % (self.id)
 
 class Tag_Post_Map(Base):
     __tablename__ = 'tag_post_map'
     id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
     post_id = Column(Integer)
+    postTypeId = Column(Integer)
     tag = Column(String(50))
     acceptedAnswerId = Column(Integer)
     parentId = Column(Integer),
@@ -77,4 +82,17 @@ class Tag_Post_Map(Base):
     node_dot_js = Column(Boolean)
     scala = Column(Boolean)
     visual_cPP = Column(Boolean)
+
+class Dummy (Base):
+    __tablename__ = 'abc'
+    id= Column (Integer, Sequence('dummy_id_seq'),primary_key=True)
+    name = Column (String(50))
+    score = Column(Integer)
+    
+class Dummy2 (Base):
+    __tablename__ = 'pqr'
+    id= Column (Integer, Sequence('dummy_id_seq'),primary_key=True)
+    dumId = Column(Integer)
+    name = Column (String(50))
+    score = Column(Integer)
     
