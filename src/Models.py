@@ -11,7 +11,7 @@ class Post(Base):
     '''
     classdocs
     '''
-    __tablename__ = 'post1'
+    __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
@@ -33,6 +33,9 @@ class Post(Base):
     favouriteCount = Column(Integer)
     closedDate = Column(DateTime)
     communityOwnedDate = Column(DateTime)
+    
+    def getVars(self):
+        return vars(self)
     
     def __repr__(self):
         return "<Post (%d)>" % (self.id)
@@ -82,7 +85,7 @@ class Tag_Post_Map(Base):
     node_dot_js = Column(Boolean)
     scala = Column(Boolean)
     visual_cPP = Column(Boolean)
-
+    
 class Dummy (Base):
     __tablename__ = 'abc'
     id= Column (Integer, Sequence('dummy_id_seq'),primary_key=True)

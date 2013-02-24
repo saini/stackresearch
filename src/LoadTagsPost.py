@@ -15,9 +15,6 @@ class DataLoad():
     
     def __init__(self , config):
         self.dbConfig = config
-        #self.con = self.openConnection()
-        #self.writeCon = self.openConnection()
-        #self.cursor = self.con.cursor(cursors.SSCursor)
         self.languages = ['java', 'python', 'c#', 'c++', 'php', 'c',
                            'ruby', 'ruby-on-rails', 'javascript', 'jquery',
                             'asp.net', 'objective-c','sql', 'xml', 'perl',
@@ -54,10 +51,88 @@ class DataLoad():
                 self.writeCon.commit()
     
     def loadData2(self):
-        for row in self.session.query(Post).filter(Post.postTypeId==1)[0:10]:
-            print row
-        print "done"
+        i=0;
+        j=i+2;
+        count = 0;
+        for row in self.session.query(Post).filter(Post.postTypeId==1)[i:j]:
+            self.insertRow(row)
+            count +=1
+        print "done", count
+    
+    def insertRow(self, row):
+        tags = self.processRow(row) # clean tags.
+        lang = ''
+        for tag in tags:
+            if tag in self.languages:
+                lang = tag
+                if lang.lower()== 'c#':
+                    lang = 'cSharp'
+                elif lang.lower()=='c++':
+                    lang = 'cPP'
+                elif lang.lower() == 'ruby-on-rails':
+                    lang = 'ruby_on_rails'
+                elif lang.lower() == 'asp.net':
+                    lang = 'asp_dot_net'
+                elif lang.lower() == 'objective-c':
+                    lang = 'objective_c'
+                elif lang.lower() == 'node.js':
+                    lang = 'node_dot_js'
+                elif lang.lower() == 'visual-c++':
+                    lang = 'visual_cPP'
+                break;
+        try:
+            for tag in tags:
+                self.addTagPost(row, lang=lang, tag=tag)
+            self.session.commit()
+        except Exception , e:
+            print "ERROR: ", sys.exc_info()
+    
+    def addTagPost(self,row,lang=None,tag=None):
+        vars = row.getVars()
+        #id = vars['id']
+        #del vars['id']
+        tpm = Tag_Post_Map()
+        print type(tpm), tpm
+        for field in vars:
+            if field=='_sa_instance_state':
+                pass
+            elif field == 'id':
+                setattr(tpm,'post_id', vars[field])
+            else:
+                setattr(tpm, field, vars[field])
+        #tpm.acceptedAnswerId = row.acceptedAnswerId
+#        tpm.parentId = row['parentId']
+#        tpm.creationDate = row['creationDate']
+#        tpm.score = row['score']
+#        tpm.viewCount = row['viewCount']
+#        tpm.body = row['body']
+#        tpm.ownerUserId = row['ownerUserId']
+#        tpm.ownerDisplayName = row['ownerDisplayName']
+#        tpm.lastEditorUserId = row('lastEditorUserId')
+#        tpm.lastEditorDisplayName = row('lastEditorDisplayName')
+#        tpm.lastEditDate = row('lastEditDate')
+#        tpm.lastActivityDate = row('lastActivityDate')
+#        tpm.title = row('title')
+#        tpm.tags = row('tags')
+#        tpm.answerCount = row('answerCount')
+#        tpm.commentCount = row('commentCount')
+#        tpm.favouriteCount = row('favouriteCount')
+#        tpm.closedDate = row('closedDate')
+#        tpm.communityOwnedDate = row('communityOwnedDate')
+#        tpm.post_id = id
+        tpm.tag = tag
+        if lang is not None:
+            setattr(tpm, lang, True)
+        self.session.add(tpm)
 
+    def processRow(self, row):
+        tags = row.tags
+        print tags
+        tags = tags.strip() #=strip(tags)
+        tags = tags[1:-1]
+        tags = tags.split("><")
+        return tags
+    
     def addData(self):
         dummy = Dummy(name="ba", score=12)
         self.session.add(dummy)
