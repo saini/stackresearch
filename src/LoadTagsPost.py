@@ -50,11 +50,11 @@ class DataLoad():
                 self.insertRows(rows, toTable)
                 self.writeCon.commit()
 
-    def loadData2(self):
-        i=0;
+    def loadData2(self, start=0, end=10338371):
+        i=start;
         window = 1000
         j=i+window
-        count = 0
+        count = i
         keepLoading = True
         while keepLoading:
             #print "INDEXS ARE ",i, j
@@ -63,6 +63,9 @@ class DataLoad():
                 keepLoading=True
                 self.insertRow(row)
                 count +=1
+                if count==end:
+                    keepLoading = False
+                    break
             i=j
             j=j+window
         print "done", count
@@ -140,4 +143,7 @@ dbConfig = { 'host': 'karnali.ics.uci.edu',
                          'pass': 'tyl0n4pi',
                          'db': 'stackoverflow'}
 dataLoad =  DataLoad(dbConfig) # gets the dataLoadObject and opens the connection
-dataLoad.loadData2()
+args = sys.argv
+st = sys.argv[1]
+en = sys.argv[2]
+dataLoad.loadData2(start=st, end = en)
