@@ -33,39 +33,19 @@ class DataLoad():
         self.dbConnect =DbConnect(self.dbConfig)
         Session, self.engine  = self.dbConnect.openConnection()
         self.session = Session()
-        
-            
-    def loadData(self, fromTable, toTable):
-        #rowNum =  self.getTotalRowsInTable(fromTable)
-        query = "SELECT "+self.postsFields+" from {0} where posttypeid = 1".format(fromTable)
-        num=10
-        print "firing query"
-        self.fireQuery(query, self.cursor)
-        print "query fired"
-        while True:
-            rows = self.cursor.fetchmany(num)
-            if rows is None:
-                break
-            else:
-                self.insertRows(rows, toTable)
-                self.writeCon.commit()
 
-    def loadData2(self, start=0, end=10338371):
-        i=start;
+    def loadData(self, start=0, end=10338371):
+        i=0;
         window = 1000
         j=i+window
         count = i
         keepLoading = True
         while keepLoading:
-            #print "INDEXS ARE ",i, j
             keepLoading=False
-            for row in self.session.query(Post).filter(Post.postTypeId==1)[i:j]:
+            for row in self.session.query(Post).filter(Post.postTypeId==1, Post.id>start, Post.id<end)[i:j]:
                 keepLoading=True
                 self.insertRow(row)
                 count +=1
-                if count==end:
-                    keepLoading = False
-                    break
             i=j
             j=j+window
         print "done", count
@@ -97,13 +77,12 @@ class DataLoad():
             self.session.commit()
         except Exception , e:
             print "ERROR: ", sys.exc_info()
-            self.writeToFile(sys.exc_info())
-
+            self.writeToFile(str(sys.exc_info()))
 
     def addTagPost(self,row,lang=None,tag=None):
         vars = row.getVars()
         tpm = Tag_Post_Map()
-        print type(tpm), tpm
+        #print type(tpm), tpm
         for field in vars:
             if field=='_sa_instance_state':
                 pass
@@ -118,32 +97,35 @@ class DataLoad():
 
     def processRow(self, row):
         tags = row.tags
-        print tags
+        #print tags
         tags = tags.strip() #=strip(tags)
         tags = tags[1:-1]
         tags = tags.split("><")
         return tags
     
-    def addData(self):
-        dummy = Dummy(name="ba", score=12)
-        self.session.add(dummy)
-        dummy.score=14
-        dummy.name='vv'
-        self.session.add(dummy)
-        self.session.commit()
-
     def writeToFile(self, text):
         try:
             file = open("errorlog.txt",'a')
-            file.write(text+'\n')
+            file.write(text)
+            file.write('\n')
         finally:
             file.close()
-dbConfig = { 'host': 'karnali.ics.uci.edu',
-                         'user': 'sourcerer',
-                         'pass': 'tyl0n4pi',
-                         'db': 'stackoverflow'}
-dataLoad =  DataLoad(dbConfig) # gets the dataLoadObject and opens the connection
-args = sys.argv
-st = sys.argv[1]
-en = sys.argv[2]
-dataLoad.loadData2(start=st, end = en)
+    
+    def readData(self, start, end):
+        rows = self.session.query(Tag_Post_Answer).filter(Tag_Post_Answer.id>=start, Tag_Post_Answer.id<end)
+        return rows
+    
+    def loadAnswers(self,start,end):
+        rows = self.session.query(Tag_Post_Map).filter(Tag_Post_Map.id>start, Tag_Post_Map.id<end, Tag_Post_Map.acceptedAnswerId is not None)
+        return rows
+
+if __name__ == 'main':
+    dbConfig = { 'host': 'karnali.ics.uci.edu',
+                             'user': 'sourcerer',
+                             'pass': 'tyl0n4pi',
+                             'db': 'stackoverflow'}
+    dataLoad =  DataLoad(dbConfig) # gets the dataLoadObject and opens the connection
+    args = sys.argv
+    st = sys.argv[1]
+    en = sys.argv[2]
+    dataLoad.loadData(start=int(st), end = int(en))

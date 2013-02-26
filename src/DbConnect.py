@@ -23,7 +23,7 @@ class DbConnect(object):
                                                                     self.config['pass'],
                                                                     self.config['host'],
                                                                     self.config['db'])
-        engine = create_engine(connectionString,echo=True)
+        engine = create_engine(connectionString,echo=False)
         Session = sessionmaker(engine)
         return Session,engine
     
