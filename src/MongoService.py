@@ -6,7 +6,6 @@ Created on Feb 25, 2013
 from LoadTagsPost import DataLoad
 from pymongo import Connection
 import sys
-from threading import thread
 class MongoService():
     '''
     classdocs
