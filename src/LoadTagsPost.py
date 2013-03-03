@@ -43,10 +43,10 @@ class DataLoad():
         keepLoading = True
         while keepLoading:
             keepLoading=False
-            
-            self.session.query(Questions).outerjoin(AcceptedAnswers).\
-...         filter(Questions.acceptedAnswerId==AcceptedAnswers.id).\
-...         all() 
+#            
+#            self.session.query(Questions).outerjoin(AcceptedAnswers).\
+#...         filter(Questions.acceptedAnswerId==AcceptedAnswers.id).\
+#...         all() 
             
             for row in self.session.query(Questions)[i:j]:
                 keepLoading=True
@@ -119,6 +119,10 @@ class DataLoad():
     
     def readData(self, start, end):
         rows = self.session.query(Questions)[start:end]
+        return rows
+    
+    def readData2(self, start, end):
+        rows = self.session.query(Answers)[start:end]
         return rows
     
     def getDamagedPosts(self,start,end):
