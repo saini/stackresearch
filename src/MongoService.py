@@ -101,8 +101,8 @@ if __name__ == '__main__':
     win = sys.argv[3]
     sel = sys.argv[4]
     print "loading..."
-    if sel==1:
+    if int(sel)==1:
         mservice.loadData(int(st),int(en),int(win))
-    else:
+    elif int(sel)==2:
         mservice.loadData2(int(st),int(en),int(win))
     print "loading done.."
