@@ -115,11 +115,28 @@ class DataLoad():
         rows = self.session.query(Tag_Post_Answer).filter(Tag_Post_Answer.id>=start, Tag_Post_Answer.id<end)
         return rows
     
+    def getDamagedPosts(self,start,end):
+        rows = self.session.query(Post)[start:end]
+        return rows
+    
     def loadAnswers(self,start,end):
         rows = self.session.query(Tag_Post_Map).filter(Tag_Post_Map.id>start, Tag_Post_Map.id<end, Tag_Post_Map.acceptedAnswerId is not None)
         return rows
+    
+    def removeRows(self,start, end,window):
+        i=start
+        j=i+window
+        while j <=end:
+            print i,j
+            rows = self.getDamagedPosts(i,j)
+            for row in rows:
+                post_id = row.id
+                self.session.query(Tag_Post_Map).remove(Tag_Post_Map.post_id == post_id)
+            self.session.commit()
+            i=j
+            j=j+window
 
-if __name__ == 'main':
+if __name__ == '__main__':
     dbConfig = { 'host': 'karnali.ics.uci.edu',
                              'user': 'sourcerer',
                              'pass': 'tyl0n4pi',
@@ -128,4 +145,5 @@ if __name__ == 'main':
     args = sys.argv
     st = sys.argv[1]
     en = sys.argv[2]
-    dataLoad.loadData(start=int(st), end = int(en))
+    win = sys.argv[3]
+    dataLoad.removeRows(start=int(st), end = int(en),window=int(win))

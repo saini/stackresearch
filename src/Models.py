@@ -11,7 +11,7 @@ class Post(Base):
     '''
     classdocs
     '''
-    __tablename__ = 'posts'
+    __tablename__ = 'damaged_posts_new'
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
@@ -41,7 +41,7 @@ class Post(Base):
         return "<Post (%d)>" % (self.id)
 
 class Tag_Post_Map(Base):
-    __tablename__ = 'tag_post_map2'
+    __tablename__ = 'tag_post_map3'
     id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
     post_id = Column(Integer)
     postTypeId = Column(Integer)
@@ -88,7 +88,7 @@ class Tag_Post_Map(Base):
 
 
 class Tag_Post_Answer(Base):
-    __tablename__ = 'tag_post_answer_map'
+    __tablename__ = 'tag_post_answer_map_all'
     id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
     post_id = Column(Integer)
     postTypeId = Column(Integer)

@@ -54,7 +54,8 @@ class StackService():
             j=j+window
         print "done", count
         return returnSet
-if __name__ == 'main':
+
+if __name__ == '__main__':
     dbConfig = { 'host': 'karnali.ics.uci.edu',
                              'user': 'sourcerer',
                              'pass': 'tyl0n4pi',

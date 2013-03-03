@@ -30,8 +30,8 @@ class MongoService():
             print "********", i, j
             i = j
             j += window
-            tag_post_answer = self.db.tag_post_map_answer
-            tag_post_answer.insert(rows)
+            tag_post_answer_new = self.db.tag_post_map_answer_new
+            tag_post_answer_new.insert(rows)
         print "returning from loadData"
     
     def getAnswers(self,start,end,window):
@@ -48,6 +48,19 @@ class MongoService():
             #tag_post_map.insert(rows)
         print "returning from loadData"
 
+    def removeRows(self,start, end,window):
+        i=start
+        j=i+window
+        while j <=end:
+            print i,j
+            rows = self.sqlservice.getDamagedPosts(i,j)
+            for row in rows:
+                post_id = row.id
+                print post_id, row.tags
+                self.db.tag_post_map.remove({'post_id':post_id})
+            i=j
+            j=j+window
+    
     def getVars(self, rows):
         ret = []
         for row in rows:
@@ -57,22 +70,22 @@ class MongoService():
         return ret
 
 #print "here"
-#if __name__ == 'main':
+if __name__ == '__main__':
 #    print "hi"
-dbConfig = { 'host': 'karnali.ics.uci.edu',
-                     'user': 'sourcerer',
-                     'pass': 'tyl0n4pi',
-                     'db': 'stackoverflow'}
-config = {'sql_config': dbConfig,
-          'host' : 'localhost',
-          'port' : 27017,
-          'db' : 'stackoverflow'
-          }
-mservice = MongoService(config)
-args = sys.argv
-st = sys.argv[1]
-en = sys.argv[2]
-win = sys.argv[3]
-print "loading..."
-mservice.getAnswers(int(st),int(en),int(win))
-print "loading done.."
+    dbConfig = { 'host': 'karnali.ics.uci.edu',
+                         'user': 'sourcerer',
+                         'pass': 'tyl0n4pi',
+                         'db': 'stackoverflow'}
+    config = {'sql_config': dbConfig,
+              'host' : 'localhost',
+              'port' : 27017,
+              'db' : 'stackoverflow'
+              }
+    mservice = MongoService(config)
+    args = sys.argv
+    st = sys.argv[1]
+    en = sys.argv[2]
+    win = sys.argv[3]
+    print "loading..."
+    mservice.removeRows(int(st),int(en),int(win))
+    print "loading done.."
