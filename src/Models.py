@@ -41,7 +41,7 @@ class Post(Base):
         return "<Post (%d)>" % (self.id)
 
 class Questions(Base):
-    __tablename__ = 'questions'
+    __tablename__ = 'questions2'
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
