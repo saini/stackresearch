@@ -11,7 +11,7 @@ class Post(Base):
     '''
     classdocs
     '''
-    __tablename__ = 'damaged_posts_new'
+    __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
@@ -27,7 +27,7 @@ class Post(Base):
     lastEditDate = Column(DateTime)
     lastActivityDate = Column(DateTime)
     title = Column(String(2000))
-    tags = Column(String(100))
+    tags = Column(String(2000))
     answerCount = Column(Integer)
     commentCount = Column(Integer)
     favouriteCount = Column(Integer)
@@ -40,6 +40,114 @@ class Post(Base):
     def __repr__(self):
         return "<Post (%d)>" % (self.id)
 
+class Questions(Base):
+    __tablename__ = 'questions'
+    id = Column(Integer, primary_key=True)
+    postTypeId = Column(Integer)
+    acceptedAnswerId = Column(Integer)
+    parentId = Column(Integer),
+    creationDate = Column(DateTime)
+    score = Column(Integer)
+    viewCount = Column(Integer)
+    ownerUserId = Column(Integer)
+    tags = Column(String(2000))
+    answerCount = Column(Integer)
+    commentCount = Column(Integer)
+    favouriteCount = Column(Integer)
+
+class AcceptedAnswers(Base):
+    __tablename__ = 'accepted_answers'
+    id = Column(Integer, primary_key=True)
+    postTypeId = Column(Integer)
+    acceptedAnswerId = Column(Integer)
+    parentId = Column(Integer),
+    creationDate = Column(DateTime)
+    score = Column(Integer)
+    viewCount = Column(Integer)
+    ownerUserId = Column(Integer)
+    tags = Column(String(2000))
+    answerCount = Column(Integer)
+    commentCount = Column(Integer)
+    favouriteCount = Column(Integer)
+
+class Answers(Base):
+    __tablename__ = 'answers'
+    id = Column(Integer, primary_key=True)
+    postTypeId = Column(Integer)
+    acceptedAnswerId = Column(Integer)
+    parentId = Column(Integer),
+    creationDate = Column(DateTime)
+    score = Column(Integer)
+    viewCount = Column(Integer)
+    ownerUserId = Column(Integer)
+    tags = Column(String(2000))
+    answerCount = Column(Integer)
+    commentCount = Column(Integer)
+    favouriteCount = Column(Integer)
+
+class TagQuestionAcceptedAnswerMap(Base):
+    __tablename__ = 'tag_question_accepted_answer_map'
+    id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
+    tag = Column(String(50))
+    post_id = Column(Integer)
+    postTypeId = Column(Integer)
+    acceptedAnswerId = Column(Integer)
+    parentId = Column(Integer),
+    creationDate = Column(DateTime)
+    score = Column(Integer)
+    viewCount = Column(Integer)
+    ownerUserId = Column(Integer)
+    tags = Column(String(2000))
+    answerCount = Column(Integer)
+    commentCount = Column(Integer)
+    favouriteCount = Column(Integer)
+    lang = Column(Integer)
+    a_id = Column(Integer, primary_key=True)
+    a_postTypeId = Column(Integer)
+    a_acceptedAnswerId = Column(Integer)
+    a_parentId = Column(Integer),
+    a_creationDate = Column(DateTime)
+    a_score = Column(Integer)
+    a_viewCount = Column(Integer)
+    a_ownerUserId = Column(Integer)
+    a_tags = Column(String(2000))
+    a_answerCount = Column(Integer)
+    a_commentCount = Column(Integer)
+    a_favouriteCount = Column(Integer)
+    turnedAroundTime = Column(Float)
+
+class TagQuestionAnswerMap(Base):
+    __tablename__ = 'tag_question_answer_map'
+    id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
+    tag = Column(String(50))
+    post_id = Column(Integer)
+    postTypeId = Column(Integer)
+    acceptedAnswerId = Column(Integer)
+    parentId = Column(Integer),
+    creationDate = Column(DateTime)
+    score = Column(Integer)
+    viewCount = Column(Integer)
+    ownerUserId = Column(Integer)
+    tags = Column(String(2000))
+    answerCount = Column(Integer)
+    commentCount = Column(Integer)
+    favouriteCount = Column(Integer)
+    lang = Column(Integer)
+    a_id = Column(Integer, primary_key=True)
+    a_postTypeId = Column(Integer)
+    a_acceptedAnswerId = Column(Integer)
+    a_parentId = Column(Integer),
+    a_creationDate = Column(DateTime)
+    a_score = Column(Integer)
+    a_viewCount = Column(Integer)
+    a_ownerUserId = Column(Integer)
+    a_tags = Column(String(2000))
+    a_answerCount = Column(Integer)
+    a_commentCount = Column(Integer)
+    a_favouriteCount = Column(Integer)
+    turnedAroundTime = Column(Float)
+
+'''
 class Tag_Post_Map(Base):
     __tablename__ = 'tag_post_map3'
     id = Column(Integer, Sequence('tag_post_map_id_seq') ,primary_key=True)
@@ -163,4 +271,4 @@ class Dummy2 (Base):
     dumId = Column(Integer)
     name = Column (String(50))
     score = Column(Integer)
-    
+'''

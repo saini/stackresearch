@@ -27,6 +27,7 @@ class StackService():
         self.dbConnect =DbConnect(self.dbConfig)
         Session, self.engine  = self.dbConnect.openConnection()
         self.session = Session()
+        
     
     def getCommonTagsAccrossLangs(self):
         commonTags = Set()
@@ -46,7 +47,7 @@ class StackService():
         keepLoading = True
         while keepLoading:
             keepLoading=False
-            for row in self.session.query(Tag_Post_Map).filter(eval(filterString)==True)[i:j]:
+            for row in self.session.query(TagQuestionAcceptedAnswerMap).filter(eval(filterString)==True)[i:j]:
                 keepLoading=True
                 returnSet.add(row)
                 count +=1

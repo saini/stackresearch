@@ -6,6 +6,7 @@ Created on Feb 25, 2013
 from LoadTagsPost import DataLoad
 from pymongo import Connection
 import sys
+from threading import thread
 class MongoService():
     '''
     classdocs
@@ -30,8 +31,21 @@ class MongoService():
             print "********", i, j
             i = j
             j += window
-            tag_post_answer_new = self.db.tag_post_map_answer_new
-            tag_post_answer_new.insert(rows)
+            question_answer_map = self.db.question_answer_map
+            question_answer_map.insert(rows)
+        print "returning from loadData"
+
+    def loadData2(self,start,end,window):
+        i = start
+        j = i+window
+        while j<=end: 
+            rows = self.sqlservice.readData2(i, j)
+            rows = self.getVars(rows)
+            print "********", i, j
+            i = j
+            j += window
+            question_answer_map = self.db.question_answer_map
+            question_answer_map.insert(rows)
         print "returning from loadData"
     
     def getAnswers(self,start,end,window):
@@ -86,6 +100,10 @@ if __name__ == '__main__':
     st = sys.argv[1]
     en = sys.argv[2]
     win = sys.argv[3]
+    sel = sys.argv[4]
     print "loading..."
-    mservice.removeRows(int(st),int(en),int(win))
+    if sel==1:
+        mservice.loadData(int(st),int(en),int(win))
+    else:
+        mservice.loadData2(int(st),int(en),int(win))
     print "loading done.."

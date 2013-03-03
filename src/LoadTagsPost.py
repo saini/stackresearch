@@ -33,6 +33,7 @@ class DataLoad():
         self.dbConnect =DbConnect(self.dbConfig)
         Session, self.engine  = self.dbConnect.openConnection()
         self.session = Session()
+        Base.metadata.create_all(self.engine)
 
     def loadData(self, start=0, end=10338371):
         i=0;
@@ -42,7 +43,12 @@ class DataLoad():
         keepLoading = True
         while keepLoading:
             keepLoading=False
-            for row in self.session.query(Post).filter(Post.postTypeId==1, Post.id>start, Post.id<end)[i:j]:
+            
+            self.session.query(Questions).outerjoin(AcceptedAnswers).\
+...         filter(Questions.acceptedAnswerId==AcceptedAnswers.id).\
+...         all() 
+            
+            for row in self.session.query(Questions)[i:j]:
                 keepLoading=True
                 self.insertRow(row)
                 count +=1
@@ -81,7 +87,7 @@ class DataLoad():
 
     def addTagPost(self,row,lang=None,tag=None):
         vars = row.getVars()
-        tpm = Tag_Post_Map()
+        tpm = TagQuestionAcceptedAnswerMap()
         #print type(tpm), tpm
         for field in vars:
             if field=='_sa_instance_state':
@@ -112,7 +118,7 @@ class DataLoad():
             file.close()
     
     def readData(self, start, end):
-        rows = self.session.query(Tag_Post_Answer).filter(Tag_Post_Answer.id>=start, Tag_Post_Answer.id<end)
+        rows = self.session.query(Questions)[start:end]
         return rows
     
     def getDamagedPosts(self,start,end):
@@ -120,7 +126,7 @@ class DataLoad():
         return rows
     
     def loadAnswers(self,start,end):
-        rows = self.session.query(Tag_Post_Map).filter(Tag_Post_Map.id>start, Tag_Post_Map.id<end, Tag_Post_Map.acceptedAnswerId is not None)
+        rows = self.session.query(TagQuestionAcceptedAnswerMap).filter(TagQuestionAcceptedAnswerMap.id>start, TagQuestionAcceptedAnswerMap.id<end, TagQuestionAcceptedAnswerMap.acceptedAnswerId is not None)
         return rows
     
     def removeRows(self,start, end,window):
@@ -131,7 +137,7 @@ class DataLoad():
             rows = self.getDamagedPosts(i,j)
             for row in rows:
                 post_id = row.id
-                self.session.query(Tag_Post_Map).remove(Tag_Post_Map.post_id == post_id)
+                self.session.query(TagQuestionAcceptedAnswerMap).remove(TagQuestionAcceptedAnswerMap.post_id == post_id)
             self.session.commit()
             i=j
             j=j+window
@@ -142,8 +148,8 @@ if __name__ == '__main__':
                              'pass': 'tyl0n4pi',
                              'db': 'stackoverflow'}
     dataLoad =  DataLoad(dbConfig) # gets the dataLoadObject and opens the connection
-    args = sys.argv
-    st = sys.argv[1]
-    en = sys.argv[2]
-    win = sys.argv[3]
-    dataLoad.removeRows(start=int(st), end = int(en),window=int(win))
+#    args = sys.argv
+#    st = sys.argv[1]
+#    en = sys.argv[2]
+#    win = sys.argv[3]
+#    dataLoad.removeRows(start=int(st), end = int(en),window=int(win))
