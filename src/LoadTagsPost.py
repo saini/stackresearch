@@ -33,7 +33,7 @@ class DataLoad():
         self.dbConnect =DbConnect(self.dbConfig)
         Session, self.engine  = self.dbConnect.openConnection()
         self.session = Session()
-        Base.metadata.create_all(self.engine)
+        #Base.metadata.create_all(self.engine)
 
     def loadData(self, start=0, end=10338371):
         i=0;
