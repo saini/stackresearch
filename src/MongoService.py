@@ -17,8 +17,8 @@ class MongoService():
         Constructor
         '''
         self.config = config
-        #self.connection = Connection(self.config['host'], self.config['port'])
-        #self.db = self.connection[self.config['db']]
+        self.connection = Connection(self.config['host'], self.config['port'])
+        self.db = self.connection[self.config['db']]
         self.sqlservice = DataLoad(self.config['sql_config'])
 
     def loadData(self,start,end,window):
@@ -27,12 +27,11 @@ class MongoService():
         while j<=end: 
             rows = self.sqlservice.readData(i, j)
             rows = self.getVars(rows)
-            print rows
             print "********", i, j
             i = j
             j += window
-            #question_answer_map = self.db.question_answer_map
-            #question_answer_map.insert(rows)
+            question_answer_map = self.db.question_answer_map
+            question_answer_map.insert(rows)
         print "returning from loadData"
 
     def loadData2(self,start,end,window):
@@ -44,8 +43,8 @@ class MongoService():
             print "********", i, j
             i = j
             j += window
-            #question_answer_map = self.db.question_answer_map
-            #question_answer_map.insert(rows)
+            question_answer_map = self.db.question_answer_map
+            question_answer_map.insert(rows)
         print "returning from loadData"
     
     def getAnswers(self,start,end,window):
