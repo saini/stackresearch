@@ -45,7 +45,7 @@ class Questions(Base):
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -60,7 +60,7 @@ class AcceptedAnswers(Base):
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -75,7 +75,7 @@ class Answers(Base):
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -92,7 +92,7 @@ class TagQuestionAcceptedAnswerMap(Base):
     post_id = Column(Integer)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -123,7 +123,7 @@ class TagQuestionAnswerMap(Base):
     post_id = Column(Integer)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -136,7 +136,7 @@ class TagQuestionAnswerMap(Base):
     a_id = Column(Integer, primary_key=True)
     a_postTypeId = Column(Integer)
     a_acceptedAnswerId = Column(Integer)
-    a_parentId = Column(Integer),
+    a_parentId = Column(Integer)
     a_creationDate = Column(DateTime)
     a_score = Column(Integer)
     a_viewCount = Column(Integer)
@@ -155,7 +155,7 @@ class Tag_Post_Map(Base):
     postTypeId = Column(Integer)
     tag = Column(String(50))
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -202,7 +202,7 @@ class Tag_Post_Answer(Base):
     postTypeId = Column(Integer)
     tag = Column(String(50))
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
