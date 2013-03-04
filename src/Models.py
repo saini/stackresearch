@@ -15,7 +15,7 @@ class Post(Base):
     id = Column(Integer, primary_key=True)
     postTypeId = Column(Integer)
     acceptedAnswerId = Column(Integer)
-    parentId = Column(Integer),
+    parentId = Column(Integer)
     creationDate = Column(DateTime)
     score = Column(Integer)
     viewCount = Column(Integer)
@@ -105,7 +105,7 @@ class TagQuestionAcceptedAnswerMap(Base):
     a_id = Column(Integer, primary_key=True)
     a_postTypeId = Column(Integer)
     a_acceptedAnswerId = Column(Integer)
-    a_parentId = Column(Integer),
+    a_parentId = Column(Integer)
     a_creationDate = Column(DateTime)
     a_score = Column(Integer)
     a_viewCount = Column(Integer)
