@@ -86,7 +86,7 @@ class MongoService():
     def dummyHtml(self):
         tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
         entry = tag_aac_qc_ratio.find_one({"_id":"list"})
-        langs = entry.value.langs
+        langs = entry['value']['langs']
         print len(langs)
         
         html = """<html>
