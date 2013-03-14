@@ -118,11 +118,11 @@ class DataLoad():
             file.close()
     
     def readData(self, start, end):
-        rows = self.session.query(Questions)[start:end]
+        rows = self.session.query(Questions).filter(Questions.id==4)
         return rows
     
     def readData2(self, start, end):
-        rows = self.session.query(Answers)[start:end]
+        rows = self.session.query(Answers).filter(Answers.parentId==4)
         return rows
     
     def getDamagedPosts(self,start,end):

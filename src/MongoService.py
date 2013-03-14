@@ -6,6 +6,7 @@ Created on Feb 25, 2013
 from LoadTagsPost import DataLoad
 from pymongo import Connection
 import sys
+from bson.code import Code 
 class MongoService():
     '''
     classdocs
@@ -19,7 +20,7 @@ class MongoService():
         self.config = config
         self.connection = Connection(self.config['host'], self.config['port'])
         self.db = self.connection[self.config['db']]
-        self.sqlservice = DataLoad(self.config['sql_config'])
+        #self.sqlservice = DataLoad(self.config['sql_config'])
 
     def loadData(self,start,end,window):
         i = start
@@ -30,7 +31,7 @@ class MongoService():
             print "********", i, j
             i = j
             j += window
-            question_answer_map = self.db.question_answer_map
+            question_answer_map = self.db.qa
             question_answer_map.insert(rows)
         print "returning from loadData"
 
@@ -43,7 +44,7 @@ class MongoService():
             print "********", i, j
             i = j
             j += window
-            question_answer_map = self.db.question_answer_map
+            question_answer_map = self.db.qa
             question_answer_map.insert(rows)
         print "returning from loadData"
     
@@ -81,6 +82,29 @@ class MongoService():
             obj['_sa_instance_state'] = None
             ret.append(obj)
         return ret
+    
+    def dummyHtml(self):
+        tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
+        entry = tag_aac_qc_ratio.find_one({"_id":"list"})
+        langs = entry.value.langs
+        print len(langs)
+        
+        html = """<html>
+    <head>
+    </head>
+    <body>
+        hello world
+    </body>
+</html>
+        """
+        return html
+    
+    def writeToFile(self, text):
+        file = open("dummy.html",'a')
+        try:
+            file.write(text)
+        finally:
+            file.close()
 
 #print "here"
 if __name__ == '__main__':
@@ -95,14 +119,18 @@ if __name__ == '__main__':
               'db' : 'stackoverflow'
               }
     mservice = MongoService(config)
-    args = sys.argv
-    st = sys.argv[1]
-    en = sys.argv[2]
-    win = sys.argv[3]
-    sel = sys.argv[4]
-    print "loading..."
-    if int(sel)==1:
-        mservice.loadData(int(st),int(en),int(win))
-    elif int(sel)==2:
-        mservice.loadData2(int(st),int(en),int(win))
-    print "loading done.."
+    print "creating html"
+    mservice.dummyHtml()
+    #mservice.writeToFile(mservice.dummyHtml())
+    print "done"
+#    args = sys.argv
+#    st = sys.argv[1]
+#    en = sys.argv[2]
+#    win = sys.argv[3]
+#    sel = sys.argv[4]
+#    print "loading..."
+#    if int(sel)==1:
+#        mservice.loadData(int(st),int(en),int(win))
+#    elif int(sel)==2:
+#        mservice.loadData2(int(st),int(en),int(win))
+#    print "loading done.."
