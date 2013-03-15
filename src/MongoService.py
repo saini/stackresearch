@@ -103,7 +103,7 @@ class MongoService():
             ret.append(obj)
         return ret
     
-    def dummyHtml(self):
+    def tag_toLang_Html(self):
         tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
         tag = 'list'
         entry = tag_aac_qc_ratio.find_one({"_id":tag})
@@ -179,8 +179,74 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
 """
         return html
     
+    def scattared_tags_Html(self):
+        lang_aac_qc_ratio =  self.db.lang_aac_qc_ratio
+        language_id = 1
+        entry = lang_aac_qc_ratio.find_one({"_id":language_id})
+        tagsArray = entry['value']['tags']
+        qc = "["
+        aac = "["
+        for tagObj in tagsArray:
+            print tagObj['AcceptedAnswerCount']
+            aac += "'"+str(tagObj['AcceptedAnswerCount'])+"', "
+            qc += str(tagObj['QuestionCount'])+", "
+        aac = aac[:-2]+"]"
+        qc = qc[:-2]+"]"
+        html = """<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+      Google Visualization API Sample
+    </title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+    // Create and populate the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('number');
+    data.addColumn('number');
+    data.addColumn('number');
+  data.addColumn('number');
+var aac= """+aac + """ 
+var qc= """ + qc + """ 
+    for (var i = 0; i < aac.length; ++i) {
+      data.addRow([ qc[i],aac[i], null,null])
+    }
+
+
+
+    // Create and draw the visualization.
+    var chart = new google.visualization.ScatterChart(
+        document.getElementById('visualization'));
+    chart.draw(data, {title: 'Stackoverflow Language community support tag-wise',
+                      width: 600, height: 400,
+                      vAxis: {title: "Accepted Answer Count", titleTextStyle: {color: "green"},minValue: 0, maxValue: 1400},
+                      hAxis: {title: "Question Count", titleTextStyle: {color: "green"},minValue: 0, maxValue: 1000},
+                      pointSize:1,
+                     }
+              );
+}
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="visualization" style="width: 600px; height: 400px;"></div>
+  </body>
+</html>
+"""
+        return html
+
     def writeToFile(self, text):
-        file = open("dummy.html",'a')
+        file = open("dummy2.html",'a')
         try:
             file.write(text)
         finally:
@@ -201,7 +267,8 @@ if __name__ == '__main__':
     mservice = MongoService(config)
     print "creating html"
     #mservice.dummyHtml()
-    mservice.writeToFile(mservice.dummyHtml())
+    #mservice.writeToFile(mservice.tag_toLang_Html())
+    mservice.writeToFile(mservice.scattared_tags_Html())
     print "done"
 #    args = sys.argv
 #    st = sys.argv[1]
