@@ -231,7 +231,7 @@ var qc= """ + qc + """
     // Create and draw the visualization.
     var chart = new google.visualization.ScatterChart(
         document.getElementById('visualization'));
-    chart.draw(data, {title: 'Stackoverflow Language community support tag-wise',
+    chart.draw(data, {title: 'Stackoverflow Language community support for : """+self.langMap[language_id]+""" accross all tags',
                       width: 600, height: 400,
                       vAxis: {title: "Accepted Answer Count", titleTextStyle: {color: "green"},minValue: 0, maxValue: 1400},
                       hAxis: {title: "Question Count", titleTextStyle: {color: "green"},minValue: 0, maxValue: 1000},
