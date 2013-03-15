@@ -18,8 +18,8 @@ class MongoService():
         Constructor
         '''
         self.config = config
-        #self.connection = Connection(self.config['host'], self.config['port'])
-        #self.db = self.connection[self.config['db']]
+        self.connection = Connection(self.config['host'], self.config['port'])
+        self.db = self.connection[self.config['db']]
         #self.sqlservice = DataLoad(self.config['sql_config'])
 
     def loadData(self,start,end,window):
@@ -84,28 +84,30 @@ class MongoService():
         return ret
     
     def dummyHtml(self):
-#        tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
-#        entry = tag_aac_qc_ratio.find_one({"_id":"list"})
-#        langsArray = entry['value']['langs']
-        langArray = ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']
-        acc_qc_count_array = [700, 300, 400, 500, 600, 800]
+        tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
+        entry = tag_aac_qc_ratio.find_one({"_id":"list"})
+        langsArray = entry['value']['langs']
+#        langArray = ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']
+#        acc_qc_count_array = [700, 300, 400, 500, 600, 800]
         lang = "["
         acc_qc_count = "["
-        for langObj in langArray:
-            print langObj
-            lang += "'"+langObj+"', "
-        lang = lang[:-2]+"]"
+#        for langObj in langArray:
+#            print langObj
+#            lang += "'"+langObj+"', "
+#        lang = lang[:-2]+"]"
+#
+#        for a in acc_qc_count_array:
+#            print a
+#            acc_qc_count += str(a)+", "
+#        acc_qc_count = acc_qc_count[:-2]+"]"
 
-        for a in acc_qc_count_array:
-            print a
-            acc_qc_count += str(a)+", "
+        for langObj in langsArray:
+            print langObj['lang']
+            lang += "'"+langObj['lang']+"', "
+            acc_qc_count += str(langObj['ratio'])+", "
+        lang = lang[:-2]+"]"
         acc_qc_count = acc_qc_count[:-2]+"]"
-        
-        print acc_qc_count
-#        for langObj in langsArray:
-#            print langObj['lang']
-#            lang += "'"+langObj['lang']+"', "
-#            acc_qc_count += langObj['ratio']+", "
+
         #lang = """['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']"""
         #acc_qc_count = """[700, 300, 400, 500, 600, 800]"""
         html = """<!--
