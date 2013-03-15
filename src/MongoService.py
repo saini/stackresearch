@@ -20,6 +20,26 @@ class MongoService():
         self.config = config
         self.connection = Connection(self.config['host'], self.config['port'])
         self.db = self.connection[self.config['db']]
+        self.langMap = {1:'java',
+                        2:'pyhton',
+                        3:'c#',
+                        4:'c++',
+                        5:'php',
+                        6:'c',
+                        7:'ruby',
+                        8:'ruby-on-rails',
+                        9:'javascript',
+                        10:'jquery',
+                        11:'asp.net',
+                        12:'objective-c',
+                        13:'sql',
+                        14:'xml',
+                        15:'perl',
+                        16:'cocoa',
+                        17:'delphi',
+                        18:'scala',
+                        19:'node.js',
+                        20:'visual-c++'}
         #self.sqlservice = DataLoad(self.config['sql_config'])
 
     def loadData(self,start,end,window):
@@ -103,7 +123,7 @@ class MongoService():
 
         for langObj in langsArray:
             print langObj['lang']
-            lang += "'"+str(langObj['lang'])+"', "
+            lang += "'"+self.langMap[langObj['lang']]+"', "
             acc_qc_count += str(langObj['ratio'])+", "
         lang = lang[:-2]+"]"
         acc_qc_count = acc_qc_count[:-2]+"]"
@@ -140,7 +160,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           var wrapper = new google.visualization.ChartWrapper({
             chartType: 'ColumnChart',
             dataTable: data,
-            options: {'title': 'Countries'},
+            options: {'title': 'AAC To Language'},
             containerId: 'visualization'
           });
           wrapper.draw();
