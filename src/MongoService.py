@@ -188,7 +188,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         aac = "["
         for tagObj in tagsArray:
             print tagObj['AcceptedAnswerCount']
-            aac += "'"+str(tagObj['AcceptedAnswerCount'])+"', "
+            aac += str(tagObj['AcceptedAnswerCount'])+", "
             qc += str(tagObj['QuestionCount'])+", "
         aac = aac[:-2]+"]"
         qc = qc[:-2]+"]"
