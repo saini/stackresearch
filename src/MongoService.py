@@ -86,17 +86,61 @@ class MongoService():
     def dummyHtml(self):
         tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
         entry = tag_aac_qc_ratio.find_one({"_id":"list"})
-        langs = entry['value']['langs']
-        print len(langs)
-        
-        html = """<html>
-    <head>
-    </head>
-    <body>
-        hello world
-    </body>
+        langsArray = entry['value']['langs']
+        lang = ""
+        acc_qc_count = ""
+        for langObj in langsArray:
+            print langObj['lang']
+            lang += "'"+langObj['lang']+"', "
+            acc_qc_count += langObj['ratio']+", "
+        #lang = """['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']"""
+        #acc_qc_count = """[700, 300, 400, 500, 600, 800]"""
+        html = """<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+      Google Visualization API Sample
+    </title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1');
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string','lang');
+          data.addColumn('number','aac');
+          langs = """ + lang +""" ;
+          aac = """ + acc_qc_count + """ ;
+          for (var i = 0; i < aac.length; ++i) {
+              data.addRow([ langs[i],aac[i]])
+            }
+          
+          var wrapper = new google.visualization.ChartWrapper({
+            chartType: 'ColumnChart',
+            dataTable: data,
+            options: {'title': 'Countries'},
+            containerId: 'visualization'
+          });
+          wrapper.draw();
+        }
+      
+      
+
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="visualization" style="width: 600px; height: 400px;"></div>
+  </body>
 </html>
-        """
+"""
         return html
     
     def writeToFile(self, text):
@@ -120,8 +164,8 @@ if __name__ == '__main__':
               }
     mservice = MongoService(config)
     print "creating html"
-    mservice.dummyHtml()
-    #mservice.writeToFile(mservice.dummyHtml())
+    #mservice.dummyHtml()
+    mservice.writeToFile(mservice.dummyHtml())
     print "done"
 #    args = sys.argv
 #    st = sys.argv[1]
