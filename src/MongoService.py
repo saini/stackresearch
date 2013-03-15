@@ -222,7 +222,7 @@ var qc= """ + qc + """
     for (var i = 0; i < aac.length; ++i) {
       data.addRow([ qc[i],aac[i], null,null])
     }
-    for (var i = 0; i < """+ limit+ """ ; ++i) {
+    for (var i = 0; i < """+ str(limit)+ """ ; ++i) {
       data.addRow([ i,null, i,null])
     }
 
