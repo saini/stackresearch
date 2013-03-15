@@ -1,3 +1,4 @@
 src/errorlog.txt
 *.xml
 src/log*
+.settings
