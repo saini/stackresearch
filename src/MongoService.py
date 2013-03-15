@@ -179,14 +179,13 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
 """
         return html
     
-    def scattared_tags_Html(self):
+    def scattared_tags_Html(self, limit):
         lang_aac_qc_ratio =  self.db.lang_aac_qc_ratio
         language_id = 1
         entry = lang_aac_qc_ratio.find_one({"_id":language_id})
         tagsArray = entry['value']['tags']
         qc = "["
         aac = "["
-        limit = 14000
         for tagObj in tagsArray:
             print tagObj['AcceptedAnswerCount']
             if tagObj['QuestionCount']<limit:
@@ -270,7 +269,8 @@ if __name__ == '__main__':
     print "creating html"
     #mservice.dummyHtml()
     #mservice.writeToFile(mservice.tag_toLang_Html())
-    mservice.writeToFile(mservice.scattared_tags_Html())
+    args = sys.argv
+    mservice.writeToFile(mservice.scattared_tags_Html(int(args[1])))
     print "done"
 #    args = sys.argv
 #    st = sys.argv[1]
