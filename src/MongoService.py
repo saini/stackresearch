@@ -161,7 +161,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           var wrapper = new google.visualization.ChartWrapper({
             chartType: 'ColumnChart',
             dataTable: data,
-            options: {'title': 'AAC To Language for Tag: '"""+tag+"""},
+            options: {'title': 'AAC To Language for Tag: """+tag+""" '},
             containerId: 'visualization'
           });
           wrapper.draw();
