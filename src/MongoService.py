@@ -103,7 +103,7 @@ class MongoService():
 
         for langObj in langsArray:
             print langObj['lang']
-            lang += "'"+langObj['lang']+"', "
+            lang += "'"+str(langObj['lang'])+"', "
             acc_qc_count += str(langObj['ratio'])+", "
         lang = lang[:-2]+"]"
         acc_qc_count = acc_qc_count[:-2]+"]"
