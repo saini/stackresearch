@@ -105,7 +105,8 @@ class MongoService():
     
     def dummyHtml(self):
         tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
-        entry = tag_aac_qc_ratio.find_one({"_id":"list"})
+        tag = 'list'
+        entry = tag_aac_qc_ratio.find_one({"_id":tag})
         langsArray = entry['value']['langs']
 #        langArray = ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']
 #        acc_qc_count_array = [700, 300, 400, 500, 600, 800]
@@ -160,7 +161,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           var wrapper = new google.visualization.ChartWrapper({
             chartType: 'ColumnChart',
             dataTable: data,
-            options: {'title': 'AAC To Language'},
+            options: {'title': 'AAC To Language for Tag: '"""+tag+"""},
             containerId: 'visualization'
           });
           wrapper.draw();
