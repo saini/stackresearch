@@ -1,0 +1,45 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+      Google Visualization API Sample
+    </title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1');
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string','lang');
+          data.addColumn('number','aac');
+          langs = ['10.0', '11.0', '12.0', '13.0', '14.0', '15.0', '16.0', '17.0', '18.0', '19.0', '1.0', '20.0', '2.0', '3.0', '4.0', '5.0', '6.0', '7.0', '8.0', '9.0'] ;
+          aac = [0.700748129676, 0.726315789474, 0.789473684211, 0.68253968254, 0.652173913043, 0.795918367347, 0.777777777778, 0.925925925926, 0.897637795276, 1.0, 0.745424292845, 0.384615384615, 0.803896518684, 0.81593763534, 0.690082644628, 0.690476190476, 0.554838709677, 0.789473684211, 0.78125, 0.628140703518] ;
+          for (var i = 0; i < aac.length; ++i) {
+              data.addRow([ langs[i],aac[i]])
+            }
+          
+          var wrapper = new google.visualization.ChartWrapper({
+            chartType: 'ColumnChart',
+            dataTable: data,
+            options: {'title': 'Countries'},
+            containerId: 'visualization'
+          });
+          wrapper.draw();
+        }
+      
+      
+
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <div id="visualization" style="width: 600px; height: 400px;"></div>
+  </body>
+</html>
