@@ -250,11 +250,30 @@ var qc= """ + qc + """
         return html
 
     def writeToFile(self, text):
-        file = open("dummy2.html",'a')
+        file = open("dummy2.csv",'a')
         try:
             file.write(text)
         finally:
             file.close()
+    
+    def writeToFilename(self,filename,text):
+        file = open(filename,'a')
+        try:
+            file.write(text)
+        finally:
+            file.close()
+    
+    def tag_lang_csv(self,tag):
+        tag_aac_qc_ratio =  self.db.tag_aac_qc_ratio
+        entry = tag_aac_qc_ratio.find_one({"_id":tag})
+        langsArray = entry['value']['langs']
+#        langArray = ['Germany', 'USA', 'Brazil', 'Canada', 'France', 'RU']
+#        acc_qc_count_array = [700, 300, 400, 500, 600, 800]
+        csv = ""
+        for langObj in langsArray:
+            print langObj['lang']
+            csv += "'"+self.langMap[langObj['lang']]+"',"+ str(langObj['ratio'])+"\n"
+        return csv
 
 #print "here"
 if __name__ == '__main__':
@@ -273,7 +292,7 @@ if __name__ == '__main__':
     #mservice.dummyHtml()
     #mservice.writeToFile(mservice.tag_toLang_Html())
     args = sys.argv
-    mservice.writeToFile(mservice.scattared_tags_Html(int(args[1])))
+    mservice.writeToFilename("graph2.csv",mservice.tag_lang_csv(args[1]))
     print "done"
 #    args = sys.argv
 #    st = sys.argv[1]
